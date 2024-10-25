@@ -1,0 +1,26 @@
+- name: Test if instance-a can ping instance-b over vlan
+  hosts: instance-a
+
+  vars_files:
+    - main.vars.yml
+
+  tasks:
+    - name: Check if instance A can ping instance B via the vlan
+      ansible.builtin.command: "ping -c 10 {{ private_address[instance-b] }}"
+      register: instance_a_ping_output
+
+    - name: Instance A -> Instance B ping results
+      debug:
+        var: instance_a_ping_output.stdout_lines
+
+- name: Test if instance-b can ping instance-a over vlan
+  hosts: instance-b
+
+  tasks:
+    - name: Check if instance B can ping instance A via the vlan
+      ansible.builtin.command: "ping -c 10 {{ private_address[instance-a] }}"
+      register: instance_b_ping_output
+
+    - name: Instance B -> Instance A ping results
+      debug:
+        var: instance_b_ping_output.stdout_lines

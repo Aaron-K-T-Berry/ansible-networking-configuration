@@ -1,0 +1,14 @@
+---
+- name: Gather info about your Equinix project
+  hosts: localhost
+
+  vars_files:
+    - main.vars.yml
+
+  tasks:
+    - name: list ssh_keys
+      equinix.cloud.metal_ssh_key_info:
+      register: ssh_keys_listed
+
+    - debug:
+        var: ssh_keys_listed

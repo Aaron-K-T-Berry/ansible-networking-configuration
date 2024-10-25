@@ -1,0 +1,17 @@
+---
+# Your unique equinix project id coped from the console
+project_id: xxxx-yyyyy-zzzzz
+
+# Generated SSH key id in equinix once its been uploaded in the console
+ssh_key_id: xxxx-yyyy-zzzz
+
+# Metal server options
+os_ver: ubuntu_24_04
+
+# Private IP addresses on the VLAN we want each metal instance to have
+private_address:
+  instance-a: 198.51.20.1
+  instance-b: 198.51.20.2
+
+# Id we want to use for our vlan on Equinix and inside our host
+internal_vxlan_id: 1234

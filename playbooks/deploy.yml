@@ -1,0 +1,27 @@
+---
+- name: Setup project environment
+  hosts: localhost
+
+  vars_files:
+    - main.vars.yml
+
+  tasks:
+    - name: Deploy 'instance-a' metal device
+      equinix.cloud.metal_device:
+        project_id: "{{ project_id }}"
+        operating_system: "{{ os_ver }}"
+        project_ssh_keys: "{{ ssh_key_id }}"
+        hostname: "instance-a"
+        plan: c3.small.x86
+        metro: sy
+        state: present
+
+    - name: Deploy 'instance-b' metal device
+      equinix.cloud.metal_device:
+        project_id: "{{ project_id }}"
+        operating_system: "{{ os_ver }}"
+        project_ssh_keys: "{{ ssh_key_id }}"
+        hostname: "instance-b"
+        plan: c3.small.x86
+        metro: sy
+        state: present

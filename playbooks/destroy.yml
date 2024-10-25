@@ -1,0 +1,27 @@
+---
+- name: Teardown project environment
+  hosts: localhost
+
+  vars_files:
+    - main.vars.yml
+
+  tasks:
+    - equinix.cloud.metal_device:
+        project_id: "{{ project_id }}"
+        hostname: "instance-a"
+        state: absent
+
+    - equinix.cloud.metal_device:
+        project_id: "{{ project_id }}"
+        hostname: "instance-b"
+        state: absent
+
+    - name: Sleep for 60 seconds and continue with play
+      ansible.builtin.wait_for:
+        timeout: 60
+
+    - equinix.cloud.metal_vlan:
+        project_id: "{{ project_id }}"
+        metro: "sy"
+        vxlan: "{{ internal_vxlan_id }}"
+        state: absent
