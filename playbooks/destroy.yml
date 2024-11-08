@@ -3,7 +3,7 @@
   hosts: localhost
 
   vars_files:
-    - main.vars.yml
+    - ../main.vars.yml
 
   tasks:
     - equinix.cloud.metal_device:

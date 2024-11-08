@@ -3,7 +3,7 @@
   hosts: localhost
 
   vars_files:
-    - main.vars.yml
+    - ../main.vars.yml
 
   tasks:
     - name: list ssh_keys

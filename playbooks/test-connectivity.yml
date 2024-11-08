@@ -2,7 +2,7 @@
   hosts: instance-a
 
   vars_files:
-    - main.vars.yml
+    - ../main.vars.yml
 
   tasks:
     - name: Check if instance A can ping instance B via the vlan

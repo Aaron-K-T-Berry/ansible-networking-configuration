@@ -6,7 +6,7 @@
     - instance-b
 
   vars_files:
-    - main.vars.yml
+    - ../main.vars.yml
 
   tasks:
     - name: Get info on devices metal ports
