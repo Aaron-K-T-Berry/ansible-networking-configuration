@@ -1,0 +1,65 @@
+---
+
+- name: Setup ec2 instance networking
+  hosts: localhost
+
+  vars_files:
+    - ../main.vars.yml
+
+  vars:
+    ec2_instances:
+      # Lookup details about the instances that have been fetched by the awc_ec2 inventory
+      - "{{ hostvars['instance-a']['instance_id'] }}"
+      - "{{ hostvars['instance-b']['instance_id'] }}"
+
+  tasks:
+    # Lookup our existing development security group so we can get its ID
+    - name: Get existing development security group
+      amazon.aws.ec2_group_info:
+        filters:
+          group-name:
+            - local-ssh-demo-access
+      register: ec2_local_dev_security_group
+
+    - name: Create security group for outbound ICMP traffic
+      amazon.aws.ec2_security_group:
+        name: "instance-connectivity-outbound"
+        description: "allow outbound ICMP traffic"
+        region: "{{ aws_region }}"
+        state: present
+        rules_egress:
+          - proto: icmp
+            from_port: -1
+            to_port: -1
+            cidr_ip:
+              - "{{ hostvars['instance-a']['private_ip_address'] }}/32"
+              - "{{ hostvars['instance-b']['private_ip_address'] }}/32"
+        tags:
+          project: "{{ project_name }}"
+      register: ec2_security_group_outbound
+
+    - name: Create security group for inbound ICMP traffic
+      amazon.aws.ec2_security_group:
+        name: "instance-connectivity-inbound"
+        description: "allow inbound ICMP traffic"
+        region: "{{ aws_region }}"
+        state: present
+        rules:
+          - proto: icmp
+            from_port: -1
+            to_port: -1
+            group_name:
+              - instance-connectivity-outbound
+        tags:
+          project: "{{ project_name }}"
+      register: ec2_security_group_inbound
+
+    - name: Apply security group to existing EC2 instance
+      amazon.aws.ec2_instance:
+        instance_ids: "{{ ec2_instances }}"
+        region: "{{ aws_region }}"
+        security_groups:
+          - "{{ ec2_local_dev_security_group.security_groups[0].group_id }}"
+          - "{{ ec2_security_group_outbound.group_id }}"
+          - "{{ ec2_security_group_inbound.group_id }}"
+        state: running

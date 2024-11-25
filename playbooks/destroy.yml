@@ -6,22 +6,36 @@
     - ../main.vars.yml
 
   tasks:
-    - equinix.cloud.metal_device:
-        project_id: "{{ project_id }}"
-        hostname: "instance-a"
+    - name: Destroy instance a
+      amazon.aws.ec2_instance:
+        name: "instance-a"
         state: absent
 
-    - equinix.cloud.metal_device:
-        project_id: "{{ project_id }}"
-        hostname: "instance-b"
+    - name: Destroy instance b
+      amazon.aws.ec2_instance:
+        name: "instance-b"
         state: absent
 
-    - name: Sleep for 60 seconds and continue with play
-      ansible.builtin.wait_for:
-        timeout: 60
+    - name: Remove ec2 ssh key
+      amazon.aws.ec2_key:
+        name: "{{ key_name }}"
+        region: "{{ aws_region }}"
+        state: absent
 
-    - equinix.cloud.metal_vlan:
-        project_id: "{{ project_id }}"
-        metro: "sy"
-        vxlan: "{{ internal_vxlan_id }}"
+    - name: Remove security group
+      amazon.aws.ec2_group:
+        name: "local-ssh-demo-access"
+        region: "{{ aws_region }}"
+        state: absent
+
+    - name: Remove security group
+      amazon.aws.ec2_group:
+        name: "instance-connectivity-inbound"
+        region: "{{ aws_region }}"
+        state: absent
+
+    - name: Remove security group
+      amazon.aws.ec2_group:
+        name: "instance-connectivity-outbound"
+        region: "{{ aws_region }}"
         state: absent

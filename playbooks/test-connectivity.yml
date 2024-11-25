@@ -5,22 +5,42 @@
     - ../main.vars.yml
 
   tasks:
-    - name: Check if instance A can ping instance B via the vlan
-      ansible.builtin.command: "ping -c 10 {{ private_address[instance-b] }}"
-      register: instance_a_ping_output
+    - name: Check if instance A can ping instance B via the public ip address
+      ansible.builtin.command: "ping -c 10 {{ hostvars['instance-b']['public_ip_address'] }}"
+      register: instance_a_ping_output_public
+      ignore_errors: true
 
-    - name: Instance A -> Instance B ping results
+    - name: Instance A -> Instance B public ping results
       debug:
-        var: instance_a_ping_output.stdout_lines
+        var: instance_a_ping_output_public.stdout_lines
+
+    - name: Check if instance A can ping instance B via the private ip address
+      ansible.builtin.command: "ping -c 10 {{ hostvars['instance-b']['private_ip_address'] }}"
+      register: instance_a_ping_output_private
+      ignore_errors: true
+
+    - name: Instance A -> Instance B private ping results
+      debug:
+        var: instance_a_ping_output_private.stdout_lines
 
 - name: Test if instance-b can ping instance-a over vlan
   hosts: instance-b
 
   tasks:
-    - name: Check if instance B can ping instance A via the vlan
-      ansible.builtin.command: "ping -c 10 {{ private_address[instance-a] }}"
-      register: instance_b_ping_output
+    - name: Check if instance B can ping instance A via the public ip address
+      ansible.builtin.command: "ping -c 10 {{ hostvars['instance-a']['public_ip_address'] }}"
+      register: instance_b_ping_output_public
+      ignore_errors: true
 
-    - name: Instance B -> Instance A ping results
+    - name: Instance B -> Instance A public ping results
       debug:
-        var: instance_b_ping_output.stdout_lines
+        var: instance_b_ping_output_public.stdout_lines
+
+    - name: Check if instance B can ping instance A via the private ip address
+      ansible.builtin.command: "ping -c 10 {{ hostvars['instance-a']['private_ip_address'] }}"
+      register: instance_b_ping_output_private
+      ignore_errors: true
+
+    - name: Instance B -> Instance A private ping results
+      debug:
+        var: instance_b_ping_output_private.stdout_lines
