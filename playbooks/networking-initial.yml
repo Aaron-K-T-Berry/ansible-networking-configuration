@@ -1,0 +1,43 @@
+---
+
+- name: Setup ec2 instance networking
+  hosts: localhost
+
+  vars_files:
+    - ../main.vars.yml
+
+  vars:
+    ec2_instances:
+      # Lookup details about the instances that have been fetched by the awc_ec2 inventory
+      - "{{ hostvars['instance-a']['instance_id'] }}"
+      - "{{ hostvars['instance-b']['instance_id'] }}"
+
+  tasks:
+    - name: Create security group in EC2
+      amazon.aws.ec2_group:
+        name: "local-ssh-demo-access"
+        description: "Security group that only allows SSH from my local IP"
+        region: "{{ aws_region }}"
+        state: present
+        rules:
+          - proto: tcp # Allow for SSH to be completed to use ansible
+            from_port: 22
+            to_port: 22
+            cidr_ip: "{{ local_ip_address }}/32"
+          - proto: icmp # Allow for ping to be completed
+            from_port: -1 # -1 means all ICMP types
+            to_port: -1 # -1 means all ICMP types
+            cidr_ip: "{{ local_ip_address }}/32"
+        tags:
+          project: "{{ project_name }}"
+      register: ec2_security_group
+
+    - name: Apply security group to existing EC2 instance
+      amazon.aws.ec2_instance:
+        instance_ids: "{{ ec2_instances }}"
+        region: "{{ aws_region }}"
+        security_groups:
+          # Use the security group created in the previous step
+          - "{{ ec2_security_group.group_id }}"
+        # Make sure the instance is in running state
+        state: running

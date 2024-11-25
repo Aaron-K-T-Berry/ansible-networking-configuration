@@ -1,17 +1,15 @@
 ---
-# Your unique equinix project id coped from the console
-project_id: xxxx-yyyyy-zzzzz
+# Friendly name to be used when tagging demo resources
+project_name: "ansible-networking-demo"
 
-# Generated SSH key id in equinix once its been uploaded in the console
-ssh_key_id: xxxx-yyyy-zzzz
+# Region you want to deploy resources too
+aws_region: ap-southeast-2
 
-# Metal server options
-os_ver: ubuntu_24_04
+# Ip address that will be used to connect to AWS resources
+# Use XXXX.com to find your current ip address on the internet
+local_ip_address: 124.171.65.12
 
-# Private IP addresses on the VLAN we want each metal instance to have
-private_address:
-  instance-a: 198.51.20.1
-  instance-b: 198.51.20.2
-
-# Id we want to use for our vlan on Equinix and inside our host
-internal_vxlan_id: 1234
+# Replace with your desired key name in AWS
+key_name: "ansible-networking-demo"
+# Path to your generated private SSH key
+local_key_path: "../keys/aws_id_ed25519.pub"
