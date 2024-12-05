@@ -23,7 +23,7 @@ Python 3.12.7
 Install Ansible and playbook dependencies.
 
 ``` bash
-(.venv) $ pip install ansible==6.7.0
+(.venv) $ pip install ansible==11.1.0
 (.venv) $ ansible-galaxy collection install amazon.aws
 (.venv) $ pip install -r https://raw.githubusercontent.com/ansible-collections/community.aws/refs/heads/main/requirements.txt
 ```
@@ -40,6 +40,6 @@ The following playbooks are also available for you to run once you have setup th
 
 * [`deploy.yml`](./playbooks/deploy.yml) - Provision aws instances onto your account
 * [`destroy.yml`](./playbooks/destroy.yml) - Delete any aws resources that are deployed by the project
-* [`networking-intial.yml`](./playbooks/networking-configure.yml) - Configure private connectivity to EC2 for development
+* [`networking-initial.yml`](./playbooks/networking-configure.yml) - Configure private connectivity to EC2 for development
 * [`networking-modified.yml`](./playbooks/networking-modified.yml) - Modify the EC2 security groups
 * [`test-connectivity`](./playbooks/test-connectivity.yml) - Run a ping test between EC2 instances private and public ip address.
