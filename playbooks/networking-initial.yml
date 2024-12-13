@@ -1,6 +1,6 @@
 ---
 
-- name: Setup ec2 instance networking
+- name: Set up EC2 instance networking
   hosts: localhost
 
   vars_files:
@@ -8,7 +8,7 @@
 
   vars:
     ec2_instances:
-      # Lookup details about the instances that have been fetched by the awc_ec2 inventory
+      # Look up details about the instances that have been fetched by the aws_ec2 inventory
       - "{{ hostvars['instance-a']['instance_id'] }}"
       - "{{ hostvars['instance-b']['instance_id'] }}"
 
@@ -20,7 +20,7 @@
         region: "{{ aws_region }}"
         state: present
         rules:
-          - proto: tcp # Allow for SSH to be completed to use ansible
+          - proto: tcp # Allow for SSH to be completed to use Ansible
             from_port: 22
             to_port: 22
             cidr_ip: "{{ local_ip_address }}/32"
@@ -32,7 +32,7 @@
           project: "{{ project_name }}"
       register: ec2_security_group
 
-    - name: Apply security group to existing EC2 instance
+    - name: Apply security group to existing EC2 instances
       amazon.aws.ec2_instance:
         instance_ids: "{{ ec2_instances }}"
         region: "{{ aws_region }}"

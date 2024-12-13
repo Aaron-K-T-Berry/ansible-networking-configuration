@@ -4,7 +4,7 @@ Deploying and configuring of cloud and networking resources using Ansible and AW
 
 ## Project Setup
 
-Make sure to setup a Python virtual environment for the project.
+Make sure to set up a Python virtual environment for the project:
 
 ```bash
 $ python3.12 -m venv .venv
@@ -20,7 +20,7 @@ Python 3.12.7
 
 ```
 
-Install Ansible and playbook dependencies.
+Install Ansible and playbook dependencies:
 
 ``` bash
 (.venv) $ pip install ansible==11.1.0
@@ -30,16 +30,16 @@ Install Ansible and playbook dependencies.
 
 ## Running playbooks
 
-All Ansible playbooks are stored in the `playbooks` directory. You can run them using the following command.
+All Ansible playbooks are stored in the `playbooks` directory. You can run them using the following command:
 
 ``` bash
 (.venv) $ ansible-playbook -i ./inventory.aws.yml ./playbooks/<filename>
 ```
 
-The following playbooks are also available for you to run once you have setup the project prerequisite.
+The following playbooks are also available for you to run once you have set up the project prerequisites:
 
-* [`deploy.yml`](./playbooks/deploy.yml) - Provision aws instances onto your account
-* [`destroy.yml`](./playbooks/destroy.yml) - Delete any aws resources that are deployed by the project
+* [`deploy.yml`](./playbooks/deploy.yml) - Provision AWS instances onto your account
+* [`destroy.yml`](./playbooks/destroy.yml) - Delete any AWS resources that are deployed by the project
 * [`networking-initial.yml`](./playbooks/networking-configure.yml) - Configure private connectivity to EC2 for development
 * [`networking-modified.yml`](./playbooks/networking-modified.yml) - Modify the EC2 security groups
-* [`test-connectivity`](./playbooks/test-connectivity.yml) - Run a ping test between EC2 instances private and public ip address.
+* [`test-connectivity.yml`](./playbooks/test-connectivity.yml) - Run a ping test between EC2 instances' private and public IP addresses

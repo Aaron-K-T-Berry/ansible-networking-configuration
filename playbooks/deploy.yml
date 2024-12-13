@@ -1,12 +1,12 @@
 ---
-- name: Setup project environment
+- name: Set up project environment
   hosts: localhost
 
   vars_files:
     - ../main.vars.yml
 
   tasks:
-    - name: gather information about Ubuntu 22.04 AMIs published by Canonical (099720109477)
+    - name: Gather information about Ubuntu 22.04 AMIs published by Canonical (099720109477)
       amazon.aws.ec2_ami_info:
         owners: 099720109477
         filters:
@@ -22,7 +22,7 @@
     - debug:
         var: ubuntu_ami_id
 
-    - name: Upload SSH key to AWS EC2
+    - name: Upload SSH key to Amazon EC2
       amazon.aws.ec2_key:
         name: "{{ key_name }}"  # The name for the key pair in AWS
         key_material: "{{ lookup('file', local_key_path) }}"  # The local SSH private key file
@@ -30,7 +30,7 @@
         tags:
           project: "{{ project_name }}"
 
-    - name: start instance a with a public IP address
+    - name: Start instance A with a public IP address
       amazon.aws.ec2_instance:
         name: "instance-a"
         instance_type: t2.micro
@@ -42,7 +42,7 @@
         tags:
           project: "{{ project_name }}"
 
-    - name: start instance b with a public IP address
+    - name: Start instance B with a public IP address
       amazon.aws.ec2_instance:
         name: "instance-b"
         instance_type: t2.micro

@@ -1,22 +1,22 @@
 ---
-- name: Teardown project environment
+- name: Tear down project environment
   hosts: localhost
 
   vars_files:
     - ../main.vars.yml
 
   tasks:
-    - name: Destroy instance a
+    - name: Destroy instance A
       amazon.aws.ec2_instance:
         name: "instance-a"
         state: absent
 
-    - name: Destroy instance b
+    - name: Destroy instance B
       amazon.aws.ec2_instance:
         name: "instance-b"
         state: absent
 
-    - name: Remove ec2 ssh key
+    - name: Remove EC2 SSH key
       amazon.aws.ec2_key:
         name: "{{ key_name }}"
         region: "{{ aws_region }}"

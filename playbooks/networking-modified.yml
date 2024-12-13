@@ -1,6 +1,6 @@
 ---
 
-- name: Setup ec2 instance networking
+- name: Set up EC2 instance networking
   hosts: localhost
 
   vars_files:
@@ -8,12 +8,12 @@
 
   vars:
     ec2_instances:
-      # Lookup details about the instances that have been fetched by the awc_ec2 inventory
+      # Look up details about the instances that have been fetched by the aws_ec2 inventory
       - "{{ hostvars['instance-a']['instance_id'] }}"
       - "{{ hostvars['instance-b']['instance_id'] }}"
 
   tasks:
-    # Lookup our existing development security group so we can get its ID
+    # Look up your existing development security group so you can get its ID
     - name: Get existing development security group
       amazon.aws.ec2_group_info:
         filters:
@@ -54,7 +54,7 @@
           project: "{{ project_name }}"
       register: ec2_security_group_inbound
 
-    - name: Apply security group to existing EC2 instance
+    - name: Apply security group to existing EC2 instances
       amazon.aws.ec2_instance:
         instance_ids: "{{ ec2_instances }}"
         region: "{{ aws_region }}"

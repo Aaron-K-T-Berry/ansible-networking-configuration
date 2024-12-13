@@ -2,11 +2,11 @@
 # Friendly name to be used when tagging demo resources
 project_name: "ansible-networking-demo"
 
-# Region you want to deploy resources too
+# Region you want to deploy resources to
 aws_region: ap-southeast-2
 
-# Ip address that will be used to connect to AWS resources
-# Use XXXX.com to find your current ip address on the internet
+# IP address that will be used to connect to AWS resources
+# Search Google for "what's my IP address" to find your current IP
 local_ip_address: 124.171.65.12
 
 # Replace with your desired key name in AWS
