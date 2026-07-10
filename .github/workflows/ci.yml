@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Ansible
+        run: pip install ansible==11.1.0
+
+      - name: Install Ansible collections
+        run: ansible-galaxy collection install amazon.aws
+
+      - name: Syntax-check playbooks
+        run: |
+          for playbook in playbooks/*.yml; do
+            echo "Checking $playbook"
+            ansible-playbook --syntax-check -i localhost, -c local "$playbook"
+          done
